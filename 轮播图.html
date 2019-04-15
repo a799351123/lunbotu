@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js轮播图效果</title>
+    <style>
+        html,
+        body,
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            height: 100%;
+        }
+
+        .box {
+            width: 800px;
+            height: 400px;
+            margin: 50px auto;
+        }
+
+        .active {
+            width: 70%;
+            overflow: hidden;
+            height: 400px;
+            position: relative;
+            float: left;
+
+        }
+
+        .active img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .active span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: #000;
+            color: white;
+            width: 100%;
+            padding: 5px;
+            opacity: .7;
+        }
+
+        /* 设置小图 */
+        .slider-1 {
+            width: 28%;
+            float: right;
+            list-style: none;
+            /* border: 1px solid red; */
+        }
+
+        .slider-1 li {
+            height: 98px;
+            margin-bottom: 2px;
+            overflow: hidden;
+            opacity: .7;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .slider-1 li:last-child {
+            margin-bottom: 0;
+        }
+
+        ul li span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: #000;
+            color: white;
+            width: 100%;
+            padding: 5px;
+            opacity: .7;
+            display: block;
+        }
+
+        .slider-1 li img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        ul li:hover {
+            opacity: 1;
+        }
+
+        @keyframes change {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="slider">
+            <!-- 大图 -->
+            <div id="bigImg" class="active">
+                <img src="img/1.jpg" alt="">
+                <span>
+                    <b>巴黎 埃菲尔铁塔</b>
+                </span>
+            </div>
+
+            <!-- 小图 -->
+            <ul class="slider-1">
+                <li style="opacity:1;">
+                    <img src="img/1.jpg" alt="">
+                    <span>巴黎 埃菲尔铁塔</span>
+                </li>
+                <li>
+                    <img src="img/2.jpg" alt="">
+                    <span>上海</span>
+                </li>
+                <li>
+                    <img src="img/3.jpg" alt="">
+                    <span>长城</span>
+                </li>
+                <li>
+                    <img src="img/4.jpg" alt="">
+                    <span>纽约</span>
+                </li>
+            </ul>
+
+
+        </div>
+
+    </div>
+    <script>
+        var ul = document.querySelector('ul');
+        var lis = document.querySelectorAll('ul li');
+        var bigImg = document.getElementById('bigImg');
+        var page = 0;
+        var timer = null;
+        for (var i = 0; i < lis.length; i++) {
+            lis[i].index = i;
+            lis[i].onclick = function () {
+                page = this.index;
+                slider();
+            }
+        }
+
+        function slider() {
+            bigImg.style.animation = 'change 0.9s';
+            bigImg.getElementsByTagName('img')[0].src = lis[page].getElementsByTagName('img')[0].src;
+            bigImg.getElementsByTagName('span')[0].innerHTML = lis[page].getElementsByTagName('span')[0].innerHTML;
+            setTimeout(function () {
+                bigImg.style.animation = '';
+            }, 900)
+            for (var i = 0; i < lis.length; i++) {
+                lis[i].style.opacity = '0.7';
+                if (i == page) {
+                    lis[i].style.opacity = '1';
+                }
+            }
+
+        }
+        ul.onmouseover = function () {
+            clearInterval(timer);
+        }
+        ul.onmouseout = function () {
+            autoplay();
+        }
+
+        function autoplay() {
+            timer = setInterval(function () {
+                page++;
+                if (page == lis.length) {
+                    page = 0;
+                }
+                slider();
+            }, 1800)
+        }
+        autoplay();
+    </script>
+</body>
+
+</html>
